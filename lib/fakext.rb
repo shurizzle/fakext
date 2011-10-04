@@ -11,12 +11,12 @@
 #++
 
 module Gem
-  def self.fakext (lib, root=Dir.pwd)
+  def self.fakext(lib, root=Dir.pwd)
     File.open(File.join(root, 'Makefile'), 'w') {|f|
       f.write "all:\n\ninstall:\n\n"
     }
 
-    if RUBY_PLATFORM =~ /(?<!dar)win/
+    if RUBY_PLATFORM =~ /(?<!dar)win|w32/
       File.open(File.join(root, lib + '.dll'), 'w') {}
       File.open(File.join(root, 'nmake.bat'), 'w') {}
     else
@@ -26,5 +26,10 @@ module Gem
       }
       File.open(File.join(root, lib + '.so'), 'w') {}
     end
+  end
+
+  def self.fakext!(lib, root=Dir.pwd)
+    fakext(lib, root)
+    exit 0
   end
 end
